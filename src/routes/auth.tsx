@@ -10,16 +10,16 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Log Masuk Penganjur — Bahasa Race 2026" },
+      { title: "Organizer Login — Malay Language Race 2026" },
       {
         name: "description",
         content:
-          "Organizer sign-in for Bahasa Race 2026: manage the shared question bank, pronunciation audio, quiz settings, and team results.",
+          "Organizer sign-in for Malay Language Race 2026: manage the shared question bank, pronunciation audio, quiz settings, and team results.",
       },
-      { property: "og:title", content: "Log Masuk Penganjur — Bahasa Race 2026" },
+      { property: "og:title", content: "Organizer Login — Malay Language Race 2026" },
       {
         property: "og:description",
-        content: "Sign in to manage the Bahasa Race 2026 event.",
+        content: "Sign in to manage the Malay Language Race 2026 event.",
       },
     ],
   }),
@@ -51,19 +51,19 @@ function AuthPage() {
         });
         if (error) throw error;
         if (!data.session) {
-          toast.success("Akaun dicipta. Sila semak e-mel untuk pengesahan.");
+          toast.success("Account created. Please check your email to confirm.");
           return;
         }
-        toast.success("Akaun dicipta.");
+        toast.success("Account created.");
         navigate({ to: "/dashboard", replace: true });
         return;
       }
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
-      toast.success("Selamat kembali!");
+      toast.success("Welcome back!");
       navigate({ to: "/dashboard", replace: true });
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Ralat pengesahan");
+      toast.error(error instanceof Error ? error.message : "Authentication error");
     } finally {
       setBusy(false);
     }
@@ -74,7 +74,7 @@ function AuthPage() {
       <EventHeader />
       <main className="mx-auto max-w-md px-5 py-16">
         <h1 className="font-display text-3xl font-extrabold">
-          {mode === "login" ? "Log Masuk Penganjur" : "Daftar Penganjur"}
+          {mode === "login" ? "Organizer Login" : "Organizer Sign Up"}
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Only organizers need an account. Players can join without signing in.
@@ -82,7 +82,7 @@ function AuthPage() {
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email">E-mel</Label>
+            <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
@@ -92,7 +92,7 @@ function AuthPage() {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Kata Laluan</Label>
+            <Label htmlFor="password">Password</Label>
             <Input
               id="password"
               type="password"
@@ -103,7 +103,7 @@ function AuthPage() {
             />
           </div>
           <Button type="submit" size="lg" className="w-full" disabled={busy}>
-            {mode === "login" ? "Log Masuk" : "Daftar"}
+            {mode === "login" ? "Log In" : "Daftar"}
           </Button>
         </form>
 
@@ -112,11 +112,11 @@ function AuthPage() {
           className="mt-4 w-full text-sm text-muted-foreground underline"
           onClick={() => setMode(mode === "login" ? "signup" : "login")}
         >
-          {mode === "login" ? "Belum ada akaun? Daftar" : "Sudah ada akaun? Log masuk"}
+          {mode === "login" ? "No account yet? Sign up" : "Already have an account? Log in"}
         </button>
 
         <Link to="/" className="mt-6 block text-center text-sm text-muted-foreground">
-          Kembali ke halaman utama
+          Back to home
         </Link>
       </main>
     </div>

@@ -6,16 +6,16 @@ import { CheckCircle2 } from "lucide-react";
 export const Route = createFileRoute("/rules")({
   head: () => ({
     meta: [
-      { title: "Peraturan Permainan — Bahasa Race 2026" },
+      { title: "Game Rules — Malay Language Race 2026" },
       {
         name: "description",
         content:
-          "Game rules for Bahasa Race 2026: how scoring, the timer, and pronunciation playback work before your team starts the quiz.",
+          "Game rules for Malay Language Race 2026: how scoring, the timer, and pronunciation playback work before your team starts the quiz.",
       },
-      { property: "og:title", content: "Peraturan Permainan — Bahasa Race 2026" },
+      { property: "og:title", content: "Game Rules — Malay Language Race 2026" },
       {
         property: "og:description",
-        content: "Read the Bahasa Race 2026 rules before your team starts the quiz.",
+        content: "Read the Malay Language Race 2026 rules before your team starts the quiz.",
       },
     ],
   }),
@@ -24,8 +24,8 @@ export const Route = createFileRoute("/rules")({
 
 const RULES = [
   "Setiap soalan memaparkan satu perkataan atau frasa Bahasa Inggeris.",
-  "Pilih terjemahan Bahasa Malaysia yang betul daripada empat pilihan (A–D).",
-  "Selepas setiap soalan, jawapan dan sebutan yang betul akan dipaparkan.",
+  "Pilih terjemahan Bahasa Malaysia yang correct daripada empat pilihan (A–D).",
+  "Selepas per question, jawapan dan sebutan yang correct akan dipaparkan.",
   "Setiap soalan mempunyai had masa. Jika masa tamat, soalan dikira tidak dijawab.",
   "Markah pasukan disimpan secara automatik dan dipaparkan pada papan pendahulu.",
 ];
@@ -35,7 +35,7 @@ function RulesPage() {
     <div className="min-h-screen bg-background">
       <EventHeader />
       <main className="mx-auto max-w-3xl px-5 py-12">
-        <h1 className="font-display text-3xl font-extrabold">Peraturan Permainan</h1>
+        <h1 className="font-display text-3xl font-extrabold">Game Rules</h1>
         <p className="mt-2 text-muted-foreground">Game Rules</p>
 
         <ul className="mt-8 space-y-4">
@@ -49,11 +49,11 @@ function RulesPage() {
 
         <div className="mt-10 flex flex-wrap gap-3">
           <Link to="/play">
-            <Button size="lg">Seterusnya: Nama Pasukan</Button>
+            <Button size="lg">Next: Team Name</Button>
           </Link>
           <Link to="/">
             <Button size="lg" variant="outline">
-              Kembali
+              Back
             </Button>
           </Link>
         </div>
