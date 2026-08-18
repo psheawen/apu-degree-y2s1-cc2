@@ -19,16 +19,16 @@ import {
 export const Route = createFileRoute("/play")({
   head: () => ({
     meta: [
-      { title: "Main Kuiz — Bahasa Race 2026" },
+      { title: "Play the Quiz — Malay Language Race 2026" },
       {
         name: "description",
         content:
-          "Enter your team name and play the Bahasa Race 2026 translation and pronunciation quiz. Answers and scores are saved instantly.",
+          "Enter your team name and play the Malay Language Race 2026 translation and pronunciation quiz. Answers and scores are saved instantly.",
       },
-      { property: "og:title", content: "Main Kuiz — Bahasa Race 2026" },
+      { property: "og:title", content: "Play the Quiz — Malay Language Race 2026" },
       {
         property: "og:description",
-        content: "Enter your team name and race through the Bahasa Race 2026 quiz.",
+        content: "Enter your team name and race through the Malay Language Race 2026 quiz.",
       },
     ],
   }),
@@ -80,7 +80,7 @@ function PlayPage() {
         });
         setFeedback(res);
       } catch (error) {
-        toast.error(error instanceof Error ? error.message : "Gagal menghantar jawapan");
+        toast.error(error instanceof Error ? error.message : "Could not submit your answer");
       } finally {
         setBusy(false);
       }
@@ -108,11 +108,11 @@ function PlayPage() {
   async function handleStart(event: React.FormEvent) {
     event.preventDefault();
     if (teamName.trim().length < 2) {
-      toast.error("Sila masukkan nama pasukan (minimum 2 aksara).");
+      toast.error("Please enter a team name (at least 2 characters).");
       return;
     }
     if (questions.length === 0) {
-      toast.error("Belum ada soalan. Sila hubungi penganjur.");
+      toast.error("No questions yet. Please contact the organizer.");
       return;
     }
     setBusy(true);
@@ -120,7 +120,7 @@ function PlayPage() {
       const res = await start({ data: { teamName: teamName.trim() } });
       setAttemptId(res.attemptId);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Gagal memulakan kuiz");
+      toast.error(error instanceof Error ? error.message : "Could not start the quiz");
     } finally {
       setBusy(false);
     }
@@ -139,7 +139,7 @@ function PlayPage() {
       const res = await finish({ data: { attemptId } });
       setResult(res);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Gagal menyimpan markah");
+      toast.error(error instanceof Error ? error.message : "Could not save your score");
     } finally {
       setBusy(false);
     }
@@ -151,21 +151,21 @@ function PlayPage() {
         <EventHeader />
         <main className="mx-auto max-w-2xl px-5 py-16 text-center">
           <p className="text-sm font-semibold tracking-widest text-muted-foreground uppercase">
-            Markah Akhir
+            Final Score
           </p>
           <h1 className="mt-3 font-display text-6xl font-extrabold">
             {result.correct} / {result.total}
           </h1>
           <p className="mt-3 text-muted-foreground">
-            Pasukan <strong>{teamName}</strong> memperoleh {result.score} mata.
+            Pasukan <strong>{teamName}</strong> memperoleh {result.score} pts.
           </p>
           <div className="mt-10 flex justify-center gap-3">
             <Button size="lg" onClick={() => navigate({ to: "/leaderboard" })}>
-              Lihat Papan Pendahulu
+              View Leaderboard
             </Button>
             <Link to="/">
               <Button size="lg" variant="outline">
-                Halaman Utama
+                Home
               </Button>
             </Link>
           </div>
@@ -179,25 +179,25 @@ function PlayPage() {
       <div className="min-h-screen bg-background">
         <EventHeader />
         <main className="mx-auto max-w-md px-5 py-16">
-          <h1 className="font-display text-3xl font-extrabold">Nama Pasukan</h1>
+          <h1 className="font-display text-3xl font-extrabold">Team Name</h1>
           <p className="mt-2 text-muted-foreground">
             {configQuery.isLoading
-              ? "Memuatkan soalan..."
-              : `${questions.length} soalan • ${settings?.time_limit_seconds ?? 30}s setiap soalan`}
+              ? "Loading questions..."
+              : `${questions.length} questions • ${settings?.time_limit_seconds ?? 30}s per question`}
           </p>
           <form onSubmit={handleStart} className="mt-8 space-y-4">
             <Input
               value={teamName}
               onChange={(e) => setTeamName(e.target.value)}
-              placeholder="cth. Team Cendol"
+              placeholder="e.g. Team Cendol"
               maxLength={40}
             />
             <Button type="submit" size="lg" className="w-full" disabled={busy}>
-              Mula Kuiz
+              Start Quiz
             </Button>
           </form>
           <Link to="/rules" className="mt-4 block text-center text-sm text-muted-foreground underline">
-            Baca peraturan
+            Read the rules
           </Link>
         </main>
       </div>
@@ -218,7 +218,7 @@ function PlayPage() {
       <EventHeader
         right={
           <span className="rounded-full border border-navy-foreground/30 px-4 py-1.5 text-sm font-bold">
-            SOALAN <span className="text-gold">{index + 1}</span> / {questions.length}
+            QUESTION <span className="text-gold">{index + 1}</span> / {questions.length}
           </span>
         }
       />
@@ -239,7 +239,7 @@ function PlayPage() {
           </h1>
           <hr className="my-6" />
           <p className="text-center text-muted-foreground">
-            Pilih terjemahan Bahasa Malaysia yang betul:
+            Choose the correct Malay translation:
           </p>
 
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -285,13 +285,13 @@ function PlayPage() {
                 )}
                 <div>
                   <p className="text-sm font-bold tracking-wide text-success uppercase">
-                    Jawapan Betul
+                    Correct Answer
                   </p>
                   <p className="font-display text-2xl font-bold">{feedback.correctText}</p>
                 </div>
               </div>
               <div className="md:border-l md:pl-6">
-                <p className="text-sm font-bold tracking-wide text-success uppercase">Sebutan</p>
+                <p className="text-sm font-bold tracking-wide text-success uppercase">Pronunciation</p>
                 <div className="mt-1 flex items-center gap-3">
                   {feedback.audioUrl && (
                     <>
@@ -300,7 +300,7 @@ function PlayPage() {
                         size="icon"
                         variant="secondary"
                         onClick={() => audioRef.current?.play()}
-                        aria-label="Mainkan sebutan"
+                        aria-label="Play pronunciation"
                       >
                         <Volume2 className="size-5" />
                       </Button>
@@ -312,7 +312,7 @@ function PlayPage() {
               </div>
             </div>
             <Button className="mt-6 w-full" size="lg" onClick={next} disabled={busy}>
-              {index + 1 < questions.length ? "Soalan Seterusnya" : "Tamat & Simpan Markah"}
+              {index + 1 < questions.length ? "Next Question" : "Finish & Save Score"}
             </Button>
           </section>
         )}

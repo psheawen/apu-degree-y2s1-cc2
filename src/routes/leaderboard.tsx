@@ -12,16 +12,16 @@ const leaderboardQuery = queryOptions({
 export const Route = createFileRoute("/leaderboard")({
   head: () => ({
     meta: [
-      { title: "Papan Pendahulu — Bahasa Race 2026" },
+      { title: "Leaderboard — Malay Language Race 2026" },
       {
         name: "description",
         content:
-          "Live Bahasa Race 2026 leaderboard: every completed team attempt ranked by score, shared across all devices.",
+          "Live Malay Language Race 2026 leaderboard: every completed team attempt ranked by score, shared across all devices.",
       },
-      { property: "og:title", content: "Papan Pendahulu — Bahasa Race 2026" },
+      { property: "og:title", content: "Leaderboard — Malay Language Race 2026" },
       {
         property: "og:description",
-        content: "See which team leads the Bahasa Race 2026 translation and pronunciation challenge.",
+        content: "See which team leads the Malay Language Race 2026 translation and pronunciation challenge.",
       },
     ],
   }),
@@ -30,9 +30,9 @@ export const Route = createFileRoute("/leaderboard")({
   },
   component: LeaderboardPage,
   errorComponent: () => (
-    <div className="p-10 text-center text-muted-foreground">Leaderboard tidak dapat dimuatkan.</div>
+    <div className="p-10 text-center text-muted-foreground">The leaderboard could not be loaded.</div>
   ),
-  notFoundComponent: () => <div className="p-10 text-center">Tidak dijumpai.</div>,
+  notFoundComponent: () => <div className="p-10 text-center">Not found.</div>,
 });
 
 const MEDALS = ["🥇", "🥈", "🥉"];
@@ -46,18 +46,18 @@ function LeaderboardPage() {
         right={
           <Link to="/rules">
             <Button variant="secondary" size="sm">
-              Main Sekarang
+              Play Now
             </Button>
           </Link>
         }
       />
       <main className="mx-auto max-w-3xl px-5 py-12">
-        <h1 className="font-display text-3xl font-extrabold">Papan Pendahulu</h1>
+        <h1 className="font-display text-3xl font-extrabold">Leaderboard</h1>
         <p className="mt-2 text-muted-foreground">All completed attempts, live from the database.</p>
 
         {data.length === 0 ? (
           <p className="mt-10 rounded-xl border bg-card p-8 text-center text-muted-foreground">
-            Belum ada pasukan yang menamatkan kuiz.
+            No team has completed the quiz yet.
           </p>
         ) : (
           <ol className="mt-8 space-y-3">
@@ -75,7 +75,7 @@ function LeaderboardPage() {
                 <span className="font-display text-lg font-bold">
                   {row.correct}/{row.total}
                   <span className="ml-2 text-sm font-medium text-muted-foreground">
-                    {row.score} mata
+                    {row.score} pts
                   </span>
                 </span>
               </li>

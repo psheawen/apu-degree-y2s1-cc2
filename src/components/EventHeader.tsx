@@ -10,7 +10,7 @@ export function EventHeader({ right }: { right?: ReactNode }) {
           <Flower2 className="size-9 text-destructive" strokeWidth={2.2} />
           <span>
             <span className="block font-display text-2xl leading-none font-extrabold tracking-tight">
-              BAHASA <span className="text-gold">RACE 2026</span>
+              MALAY LANGUAGE <span className="text-gold">RACE 2026</span>
             </span>
             <span className="text-xs text-navy-foreground/70">Translate &amp; Pronounce Challenge</span>
           </span>

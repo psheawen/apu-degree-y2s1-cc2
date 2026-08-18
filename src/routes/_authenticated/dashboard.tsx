@@ -32,16 +32,16 @@ import {
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
-      { title: "Papan Penganjur — Bahasa Race 2026" },
+      { title: "Organizer Dashboard — Malay Language Race 2026" },
       {
         name: "description",
         content:
-          "Organizer dashboard for Bahasa Race 2026: manage questions, pronunciation audio, quiz settings, and team results.",
+          "Organizer dashboard for Malay Language Race 2026: manage questions, pronunciation audio, quiz settings, and team results.",
       },
-      { property: "og:title", content: "Papan Penganjur — Bahasa Race 2026" },
+      { property: "og:title", content: "Organizer Dashboard — Malay Language Race 2026" },
       {
         property: "og:description",
-        content: "Manage the shared Bahasa Race 2026 question bank and results.",
+        content: "Manage the shared Malay Language Race 2026 question bank and results.",
       },
     ],
   }),
@@ -94,7 +94,7 @@ function Dashboard() {
         },
       }),
     onSuccess: () => {
-      toast.success("Soalan disimpan.");
+      toast.success("Question saved.");
       setForm(emptyForm);
       queryClient.invalidateQueries({ queryKey: ["org", "questions"] });
     },
@@ -114,7 +114,7 @@ function Dashboard() {
         },
       })
         .then(() => {
-          toast.success("Soalan dikemas kini.");
+          toast.success("Question updated.");
           setForm(emptyForm);
           queryClient.invalidateQueries({ queryKey: ["org", "questions"] });
         })
@@ -133,10 +133,10 @@ function Dashboard() {
         .upload(path, file, { upsert: true });
       if (error) throw error;
       await setAudioFn({ data: { id: questionId, path } });
-      toast.success("Audio dimuat naik.");
+      toast.success("Audio uploaded.");
       queryClient.invalidateQueries({ queryKey: ["org", "questions"] });
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Muat naik gagal");
+      toast.error(error instanceof Error ? error.message : "Upload failed");
     } finally {
       setUploadingId(null);
     }
@@ -147,7 +147,7 @@ function Dashboard() {
       const { url } = await signAudioFn({ data: { path } });
       new Audio(url).play();
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Audio tidak dapat dimainkan");
+      toast.error(error instanceof Error ? error.message : "Audio could not be played");
     }
   }
 
@@ -165,31 +165,31 @@ function Dashboard() {
       <EventHeader
         right={
           <Button variant="secondary" size="sm" onClick={handleSignOut}>
-            <LogOut className="mr-1 size-4" /> Log Keluar
+            <LogOut className="mr-1 size-4" /> Sign Out
           </Button>
         }
       />
       <main className="mx-auto max-w-6xl px-5 py-10">
-        <h1 className="font-display text-3xl font-extrabold">Papan Penganjur</h1>
+        <h1 className="font-display text-3xl font-extrabold">Organizer Dashboard</h1>
         <p className="mt-2 text-muted-foreground">
-          Semua data dikongsi antara penganjur dan pemain melalui pangkalan data.
+          All data is shared between organizers and players through the database.
         </p>
 
         <Tabs defaultValue="questions" className="mt-8">
           <TabsList>
-            <TabsTrigger value="questions">Soalan</TabsTrigger>
-            <TabsTrigger value="settings">Tetapan</TabsTrigger>
-            <TabsTrigger value="results">Keputusan</TabsTrigger>
+            <TabsTrigger value="questions">Questions</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
+            <TabsTrigger value="results">Results</TabsTrigger>
           </TabsList>
 
           <TabsContent value="questions" className="mt-6 space-y-8">
             <form onSubmit={handleSaveQuestion} className="rounded-2xl border bg-card p-6 shadow-card">
               <h2 className="font-display text-xl font-bold">
-                {form.id ? "Kemas Kini Soalan" : "Soalan Baharu"}
+                {form.id ? "Update Question" : "New Question"}
               </h2>
               <div className="mt-4 grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label>Perkataan Inggeris</Label>
+                  <Label>English word / phrase</Label>
                   <Input
                     required
                     value={form.english_text}
@@ -197,7 +197,7 @@ function Dashboard() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Susunan</Label>
+                  <Label>Order</Label>
                   <Input
                     type="number"
                     min={1}
@@ -208,7 +208,7 @@ function Dashboard() {
                 </div>
                 {(["a", "b", "c", "d"] as const).map((key) => (
                   <div className="space-y-2" key={key}>
-                    <Label>Jawapan {key.toUpperCase()}</Label>
+                    <Label>Answer {key.toUpperCase()}</Label>
                     <Input
                       required
                       value={form[`answer_${key}`]}
@@ -217,7 +217,7 @@ function Dashboard() {
                   </div>
                 ))}
                 <div className="space-y-2">
-                  <Label>Jawapan Betul</Label>
+                  <Label>Correct Answer</Label>
                   <Select
                     value={form.correct_answer}
                     onValueChange={(value) => setForm({ ...form, correct_answer: value as Letter })}
@@ -235,7 +235,7 @@ function Dashboard() {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label>Sebutan (contoh: /per.se.ki.ta.ran/)</Label>
+                  <Label>Pronunciation (contoh: /per.se.ki.ta.ran/)</Label>
                   <Input
                     value={form.pronunciation}
                     onChange={(e) => setForm({ ...form, pronunciation: e.target.value })}
@@ -243,10 +243,10 @@ function Dashboard() {
                 </div>
               </div>
               <div className="mt-5 flex gap-3">
-                <Button type="submit">{form.id ? "Simpan Perubahan" : "Tambah Soalan"}</Button>
+                <Button type="submit">{form.id ? "Save Changes" : "Add Question"}</Button>
                 {form.id && (
                   <Button type="button" variant="outline" onClick={() => setForm(emptyForm)}>
-                    Batal
+                    Cancel
                   </Button>
                 )}
               </div>
@@ -263,9 +263,9 @@ function Dashboard() {
                       {question.question_order}. {question.english_text}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      Betul: {question.correct_answer} •{" "}
-                      {question.pronunciation ?? "tiada sebutan"} •{" "}
-                      {question.audio_url ? "audio tersedia" : "tiada audio"}
+                      Correct: {question.correct_answer} •{" "}
+                      {question.pronunciation ?? "no pronunciation"} •{" "}
+                      {question.audio_url ? "audio available" : "no audio"}
                     </p>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
@@ -275,16 +275,16 @@ function Dashboard() {
                         variant="secondary"
                         onClick={() => previewAudio(question.audio_url!)}
                       >
-                        <Play className="mr-1 size-4" /> Dengar
+                        <Play className="mr-1 size-4" /> Listen
                       </Button>
                     )}
                     <label className="inline-flex cursor-pointer items-center rounded-md border px-3 py-1.5 text-sm">
                       <Upload className="mr-1 size-4" />
                       {uploadingId === question.id
-                        ? "Memuat naik..."
+                        ? "Uploading..."
                         : question.audio_url
-                          ? "Ganti audio"
-                          : "Muat naik audio"}
+                          ? "Replace audio"
+                          : "Upload audio"}
                       <input
                         type="file"
                         accept="audio/*"
@@ -302,11 +302,11 @@ function Dashboard() {
                         variant="outline"
                         onClick={async () => {
                           await setAudioFn({ data: { id: question.id, path: null } });
-                          toast.success("Audio dipadam.");
+                          toast.success("Audio removed.");
                           queryClient.invalidateQueries({ queryKey: ["org", "questions"] });
                         }}
                       >
-                        Padam audio
+                        Remove audio
                       </Button>
                     )}
                     <Button
@@ -333,7 +333,7 @@ function Dashboard() {
                       variant="destructive"
                       onClick={async () => {
                         await deleteQuestionFn({ data: { id: question.id } });
-                        toast.success("Soalan dipadam.");
+                        toast.success("Question deleted.");
                         queryClient.invalidateQueries({ queryKey: ["org", "questions"] });
                       }}
                     >
@@ -360,16 +360,16 @@ function Dashboard() {
                       points_per_question: Number(data.get("points_per_question")),
                     },
                   });
-                  toast.success("Tetapan disimpan.");
+                  toast.success("Settings saved.");
                   queryClient.invalidateQueries({ queryKey: ["org", "settings"] });
                 } catch (error) {
-                  toast.error(error instanceof Error ? error.message : "Gagal menyimpan");
+                  toast.error(error instanceof Error ? error.message : "Could not save");
                 }
               }}
             >
-              <h2 className="font-display text-xl font-bold">Tetapan Kuiz</h2>
+              <h2 className="font-display text-xl font-bold">Quiz Settings</h2>
               <div className="space-y-2">
-                <Label>Bilangan soalan</Label>
+                <Label>Number of questions</Label>
                 <Input
                   name="number_of_questions"
                   type="number"
@@ -379,7 +379,7 @@ function Dashboard() {
                 />
               </div>
               <div className="space-y-2">
-                <Label>Had masa (saat)</Label>
+                <Label>Time limit (seconds)</Label>
                 <Input
                   name="time_limit_seconds"
                   type="number"
@@ -389,7 +389,7 @@ function Dashboard() {
                 />
               </div>
               <div className="space-y-2">
-                <Label>Mata setiap soalan</Label>
+                <Label>Points per question</Label>
                 <Input
                   name="points_per_question"
                   type="number"
@@ -398,7 +398,7 @@ function Dashboard() {
                   key={`p-${settings?.points_per_question}`}
                 />
               </div>
-              <Button type="submit">Simpan Tetapan</Button>
+              <Button type="submit">Save Settings</Button>
             </form>
           </TabsContent>
 
@@ -406,13 +406,13 @@ function Dashboard() {
             <Button
               variant="destructive"
               onClick={async () => {
-                if (!confirm("Padam semua markah dan pasukan? Soalan dan audio kekal.")) return;
+                if (!confirm("Delete all scores and teams? Questions and audio are kept.")) return;
                 await resetFn({});
-                toast.success("Keputusan direset.");
+                toast.success("Results reset.");
                 queryClient.invalidateQueries({ queryKey: ["org", "results"] });
               }}
             >
-              Reset Keputusan
+              Reset Results
             </Button>
 
             <div className="space-y-3">
@@ -420,21 +420,21 @@ function Dashboard() {
                 <details key={attempt.id} className="rounded-xl border bg-card p-4 shadow-card">
                   <summary className="cursor-pointer font-semibold">
                     {attempt.teams?.team_name ?? "—"} — {attempt.correct_answers}/
-                    {attempt.total_questions} ({attempt.score} mata) • {attempt.status}
+                    {attempt.total_questions} ({attempt.score} pts) • {attempt.status}
                   </summary>
                   <ul className="mt-3 space-y-1 text-sm text-muted-foreground">
                     {attempt.attempt_answers.map((answer) => (
                       <li key={answer.id}>
-                        {answer.questions?.english_text}: dipilih {answer.selected_answer ?? "—"},
-                        betul {answer.questions?.correct_answer} —{" "}
-                        {answer.is_correct ? "✅" : "❌"} ({answer.points_earned} mata)
+                        {answer.questions?.english_text}: selected {answer.selected_answer ?? "—"},
+                        correct {answer.questions?.correct_answer} —{" "}
+                        {answer.is_correct ? "✅" : "❌"} ({answer.points_earned} pts)
                       </li>
                     ))}
                   </ul>
                 </details>
               ))}
               {(resultsQuery.data ?? []).length === 0 && (
-                <p className="text-muted-foreground">Belum ada percubaan.</p>
+                <p className="text-muted-foreground">No attempts yet.</p>
               )}
             </div>
           </TabsContent>
