@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { EventHeader } from "@/components/EventHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -358,6 +359,10 @@ function Dashboard() {
                       number_of_questions: Number(data.get("number_of_questions")),
                       time_limit_seconds: Number(data.get("time_limit_seconds")),
                       points_per_question: Number(data.get("points_per_question")),
+                      rules: String(data.get("rules") ?? "")
+                        .split("\n")
+                        .map((line) => line.trim())
+                        .filter((line) => line.length > 0),
                     },
                   });
                   toast.success("Settings saved.");
@@ -397,6 +402,18 @@ function Dashboard() {
                   defaultValue={settings?.points_per_question ?? 1}
                   key={`p-${settings?.points_per_question}`}
                 />
+              </div>
+              <div className="space-y-2">
+                <Label>Game rules (one per line)</Label>
+                <Textarea
+                  name="rules"
+                  rows={7}
+                  defaultValue={(settings?.rules ?? []).join("\n")}
+                  key={`r-${(settings?.rules ?? []).join("|")}`}
+                />
+                <p className="text-xs text-muted-foreground">
+                  These are shown to players on the Game Rules page.
+                </p>
               </div>
               <Button type="submit">Save Settings</Button>
             </form>
