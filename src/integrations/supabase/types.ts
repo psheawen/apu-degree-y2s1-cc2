@@ -154,6 +154,7 @@ export type Database = {
           id: string
           number_of_questions: number
           points_per_question: number
+          rules: string[]
           time_limit_seconds: number
           updated_at: string
         }
@@ -162,6 +163,7 @@ export type Database = {
           id?: string
           number_of_questions?: number
           points_per_question?: number
+          rules?: string[]
           time_limit_seconds?: number
           updated_at?: string
         }
@@ -170,6 +172,7 @@ export type Database = {
           id?: string
           number_of_questions?: number
           points_per_question?: number
+          rules?: string[]
           time_limit_seconds?: number
           updated_at?: string
         }
