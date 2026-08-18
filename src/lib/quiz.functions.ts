@@ -229,3 +229,23 @@ export const getLeaderboard = createServerFn({ method: "GET" }).handler(async ()
     completedAt: row.completed_at,
   }));
 });
+
+export const DEFAULT_RULES = [
+  "Each question shows one English word or phrase.",
+  "Choose the correct Malay translation from the four options (A-D).",
+  "After each question, the correct answer and its pronunciation are shown.",
+  "Every question has a time limit. If time runs out, the question counts as unanswered.",
+  "Your team score is saved automatically and shown on the leaderboard.",
+];
+
+export const getRules = createServerFn({ method: "GET" }).handler(async () => {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data } = await supabaseAdmin
+    .from("quiz_settings")
+    .select("rules")
+    .order("created_at", { ascending: true })
+    .limit(1)
+    .maybeSingle();
+  const rules = (data?.rules ?? []).filter((rule) => rule.trim().length > 0);
+  return { rules: rules.length > 0 ? rules : DEFAULT_RULES };
+});
