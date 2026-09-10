@@ -16,6 +16,7 @@ export type QuizSettings = {
   number_of_questions: number;
   time_limit_seconds: number;
   points_per_question: number;
+  randomize_questions: boolean;
 };
 
 export const getQuizConfig = createServerFn({ method: "GET" }).handler(async () => {
@@ -23,20 +24,31 @@ export const getQuizConfig = createServerFn({ method: "GET" }).handler(async () 
 
   const { data: settings } = await supabaseAdmin
     .from("quiz_settings")
-    .select("id, number_of_questions, time_limit_seconds, points_per_question")
+    .select("id, number_of_questions, time_limit_seconds, points_per_question, randomize_questions")
     .order("created_at", { ascending: true })
     .limit(1)
     .maybeSingle();
 
   const limit = settings?.number_of_questions ?? 5;
+  const randomize = settings?.randomize_questions ?? true;
 
   const { data: questions, error } = await supabaseAdmin
     .from("questions")
     .select("id, question_order, english_text, answer_a, answer_b, answer_c, answer_d")
-    .order("question_order", { ascending: true })
-    .limit(limit);
+    .order("question_order", { ascending: true });
 
   if (error) throw new Error(error.message);
+
+  let pool = (questions ?? []) as PlayerQuestion[];
+  if (randomize) {
+    // Fisher-Yates shuffle so every question in the bank can appear each round
+    pool = [...pool];
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+  }
+  const selected = pool.slice(0, limit);
 
   return {
     settings: (settings ?? {
@@ -44,8 +56,9 @@ export const getQuizConfig = createServerFn({ method: "GET" }).handler(async () 
       number_of_questions: 5,
       time_limit_seconds: 30,
       points_per_question: 1,
+      randomize_questions: true,
     }) as QuizSettings,
-    questions: (questions ?? []) as PlayerQuestion[],
+    questions: selected,
   };
 });
 
