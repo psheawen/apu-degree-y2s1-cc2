@@ -1,0 +1,1 @@
+ALTER TABLE public.quiz_settings ADD COLUMN randomize_questions boolean NOT NULL DEFAULT true;
