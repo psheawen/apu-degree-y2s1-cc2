@@ -359,6 +359,7 @@ function Dashboard() {
                       number_of_questions: Number(data.get("number_of_questions")),
                       time_limit_seconds: Number(data.get("time_limit_seconds")),
                       points_per_question: Number(data.get("points_per_question")),
+                      randomize_questions: data.get("randomize_questions") === "on",
                       rules: String(data.get("rules") ?? "")
                         .split("\n")
                         .map((line) => line.trim())
@@ -403,6 +404,22 @@ function Dashboard() {
                   key={`p-${settings?.points_per_question}`}
                 />
               </div>
+              <label className="flex items-start gap-3 rounded-lg border p-3 text-sm">
+                <input
+                  type="checkbox"
+                  name="randomize_questions"
+                  defaultChecked={settings?.randomize_questions ?? true}
+                  key={`rand-${settings?.randomize_questions}`}
+                  className="mt-0.5 size-4"
+                />
+                <span>
+                  <span className="font-medium">Randomize questions each round</span>
+                  <span className="block text-xs text-muted-foreground">
+                    When on, every team gets a random mix from the full question bank. When off,
+                    questions follow their set order.
+                  </span>
+                </span>
+              </label>
               <div className="space-y-2">
                 <Label>Game rules (one per line)</Label>
                 <Textarea

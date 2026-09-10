@@ -117,6 +117,7 @@ export const saveSettings = createServerFn({ method: "POST" })
         number_of_questions: z.number().int().min(1).max(100),
         time_limit_seconds: z.number().int().min(5).max(600),
         points_per_question: z.number().int().min(1).max(100),
+        randomize_questions: z.boolean(),
         rules: z.array(z.string().min(1).max(500)).max(30),
       })
       .parse(input),
